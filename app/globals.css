@@ -1,0 +1,414 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --vh: 1vh;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  min-height: 100vh;
+  /* Use the custom property in addition to vh */
+  min-height: calc(var(--vh, 1vh) * 100);
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Ensure all direct children of body have no margin by default */
+body > * {
+  margin: 0;
+  padding: 0;
+}
+
+/* Enhanced mobile optimizations */
+@media (max-width: 480px) {
+  .text-6xl {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .text-5xl {
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .text-4xl {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .text-xl {
+    font-size: 1.125rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .p-8 {
+    padding: 1rem !important;
+  }
+
+  .p-6 {
+    padding: 0.75rem !important;
+  }
+
+  .py-20 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .py-16 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .gap-8 {
+    gap: 1rem !important;
+  }
+
+  .gap-6 {
+    gap: 0.75rem !important;
+  }
+
+  .mb-16 {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .mb-10 {
+    margin-bottom: 1rem !important;
+  }
+
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Ensure cards are properly sized on mobile */
+  .grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  /* Better button sizing on mobile */
+  .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .py-6 {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+}
+
+/* Improved mobile responsiveness for tablets */
+@media (max-width: 768px) {
+  .mobile-center {
+    text-align: center;
+  }
+
+  .mobile-center .flex {
+    justify-content: center;
+  }
+
+  .mobile-center .grid {
+    place-items: center;
+  }
+
+  .mobile-center .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Ensure content is visible on mobile */
+  .py-20 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .py-16 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  /* Adjust font sizes for mobile */
+  .text-6xl {
+    font-size: 3rem;
+    line-height: 1.1;
+  }
+
+  .text-5xl {
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+
+  .text-4xl {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .text-3xl {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+
+  .text-2xl {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  /* Improve spacing on mobile */
+  .gap-8 {
+    gap: 1.5rem;
+  }
+
+  .gap-6 {
+    gap: 1rem;
+  }
+
+  .mb-16 {
+    margin-bottom: 2rem;
+  }
+
+  .mb-10 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Better table handling on mobile */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Improve card layouts on mobile */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  /* Fix padding for mobile */
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .py-6 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Better modal sizing on mobile */
+  .max-w-md {
+    max-width: calc(100vw - 2rem);
+  }
+
+  .max-w-lg {
+    max-width: calc(100vw - 2rem);
+  }
+
+  .max-w-xl {
+    max-width: calc(100vw - 2rem);
+  }
+
+  .max-w-2xl {
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* Animation for mode switching */
+.mode-transition {
+  transition: all 0.5s ease-in-out;
+}
+
+.mode-transition-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.mode-transition-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mode-transition-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mode-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Enhanced button effects */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-glow::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
+  animation: glow-sweep 1.5s forwards;
+}
+
+@keyframes glow-sweep {
+  0% {
+    transform: rotate(30deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(30deg) translateX(100%);
+  }
+}
+
+/* Improved scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* Hide scrollbar for mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fix for fixed positioning on mobile */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Ensure proper spacing for mobile containers */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Better card spacing on mobile */
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .space-y-8 > * + * {
+    margin-top: 2rem;
+  }
+
+  /* Improve form elements on mobile */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+
+  /* Better modal positioning on mobile */
+  .fixed.inset-0 {
+    padding: 1rem;
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Prevent horizontal scroll */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Ensure proper touch targets on mobile */
+@media (max-width: 768px) {
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
