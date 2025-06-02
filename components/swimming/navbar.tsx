@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion"
 interface SwimmingNavbarProps {
   onBackToSelection?: () => void
   onBookNowClick?: () => void
+  onSwitchModeClick?: () => void
 }
 
 export default function SwimmingNavbar({ onBackToSelection, onBookNowClick }: SwimmingNavbarProps) {
@@ -53,7 +54,7 @@ export default function SwimmingNavbar({ onBackToSelection, onBookNowClick }: Sw
     },
     { 
       name: "Skill Levels", 
-      href: "#levels", 
+      href: "#skill-levels", 
       icon: <Award className="w-4 h-4 text-sky-500 group-hover:text-emerald-600 transition-colors duration-300" />,
       color: "text-emerald-600",
       target: "_self"
@@ -70,13 +71,6 @@ export default function SwimmingNavbar({ onBackToSelection, onBookNowClick }: Sw
       href: "#instructors", 
       icon: <Users className="w-4 h-4 text-sky-500 group-hover:text-purple-600 transition-colors duration-300" />,
       color: "text-purple-600",
-      target: "_self"
-    },
-    { 
-      name: "Contact", 
-      href: "#contact", 
-      icon: <MessageCircle className="w-4 h-4 text-sky-500 group-hover:text-cyan-600 transition-colors duration-300" />,
-      color: "text-cyan-600",
       target: "_self"
     }
   ]

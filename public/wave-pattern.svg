@@ -1,0 +1,5 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 100 C 50 80, 150 120, 200 100 L 200 200 L 0 200 Z" fill="currentColor" fill-opacity="0.1" />
+  <path d="M0 120 C 50 100, 150 140, 200 120 L 200 200 L 0 200 Z" fill="currentColor" fill-opacity="0.15" />
+  <path d="M0 140 C 50 120, 150 160, 200 140 L 200 200 L 0 200 Z" fill="currentColor" fill-opacity="0.1" />
+</svg>

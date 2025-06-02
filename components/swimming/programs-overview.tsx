@@ -109,8 +109,8 @@ export default function ProgramsOverview() {
   }
 
   return (
-    <section id="programs" ref={sectionRef} className="py-16 md:py-24 px-4 md:px-10">
-      <div className="container mx-auto">
+    <section id="programs" ref={sectionRef} className="relative py-16 md:py-24 px-4 md:px-10 overflow-hidden">
+      <div className="container mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,11 +118,11 @@ export default function ProgramsOverview() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16 animate-on-scroll"
         >
-          <div className="inline-block px-4 py-1 bg-blue-100 rounded-full text-blue-600 text-sm font-medium mb-4">
+          <div className="inline-block px-4 py-1 bg-cyan-100/80 backdrop-blur-sm rounded-full text-cyan-800 text-sm font-medium mb-4 border border-cyan-200/50">
             SWIMMING PROGRAMS
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">DIVE INTO EXCELLENCE</h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-bold text-cyan-900 mb-4">DIVE INTO EXCELLENCE</h2>
+          <p className="text-xl text-cyan-800/90 max-w-3xl mx-auto">
             From beginner lessons to competitive training, we offer comprehensive programs for every swimmer.
           </p>
         </motion.div>
@@ -147,7 +147,7 @@ export default function ProgramsOverview() {
               className="animate-on-scroll"
             >
               <Card
-                className={`${program.bgColor} border ${program.borderColor} p-6 h-full hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 group cursor-pointer rounded-3xl`}
+                className="bg-white/90 backdrop-blur-sm border border-cyan-200/50 p-6 h-full hover:shadow-2xl hover:shadow-cyan-200/30 transition-all duration-500 group cursor-pointer rounded-3xl hover:border-cyan-300/60"
               >
                 <motion.div
                   className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${program.color} flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}
@@ -157,11 +157,11 @@ export default function ProgramsOverview() {
                   {program.icon}
                 </motion.div>
 
-                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                <h3 className="text-xl font-bold text-cyan-900 mb-3 group-hover:text-cyan-700 transition-colors duration-300">
                   {program.title}
                 </h3>
 
-                <p className="text-slate-600 mb-6 leading-relaxed group-hover:text-slate-700 transition-colors duration-300">
+                <p className="text-cyan-800/90 mb-6 leading-relaxed group-hover:text-cyan-900 transition-colors duration-300">
                   {program.description}
                 </p>
 
@@ -225,9 +225,9 @@ export default function ProgramsOverview() {
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.1 }}
-                          className="text-xs text-slate-600 flex items-start"
+                          className="text-sm text-cyan-800/90 flex items-start"
                         >
-                          <Waves className="w-3 h-3 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                          <Waves className="w-3.5 h-3.5 text-cyan-600 mr-2 mt-0.5 flex-shrink-0" />
                           {benefit}
                         </motion.li>
                       ))}

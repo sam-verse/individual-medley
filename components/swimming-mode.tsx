@@ -4,14 +4,13 @@ import React, { useRef, useEffect, useState, useCallback } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion, AnimatePresence } from "framer-motion"
-import EnhancedWaterBackground from "@/components/enhanced-water-background"
+import SwimmingBackground from "@/components/swimming/swimming-background"
 import SwimmingHero from "@/components/swimming/hero"
 import ProgramsOverview from "@/components/swimming/programs-overview"
 import SkillLevels from "@/components/swimming/skill-levels"
 import Schedule from "@/components/swimming/schedule"
 import Instructors from "@/components/swimming/instructors"
 import Testimonials from "@/components/swimming/testimonials"
-import ContactForm from "@/components/swimming/contact-form"
 import SwimmingNavbar from "@/components/swimming/navbar"
 import BookingModal from "@/components/booking-modal"
 import Footer from "@/components/swimming/footer"
@@ -163,29 +162,26 @@ export default function SwimmingMode({ onBackToSelection, onSwitchToFitness }: S
   }
 
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-white text-slate-900">
-      {/* Water background with canvas animation */}
-      <div className="fixed inset-0 z-0">
-        <EnhancedWaterBackground />
-      </div>
+    <div ref={containerRef} className="relative min-h-screen text-slate-900 bg-transparent">
+      {/* Water background with canvas animation - fixed to viewport */}
+      <SwimmingBackground />
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 bg-transparent">
         <SwimmingNavbar 
           onBackToSelection={onBackToSelection} 
           onBookNowClick={() => setIsBookingModalOpen(true)}
           onSwitchModeClick={handleSwitchModeClick}
         />
 
-        {/* Add padding-top to ensure content is visible below fixed navbar */}
-        <div className="pt-16 md:pt-20 space-y-16 md:space-y-24">
+        {/* Main content container with minimal spacing */}
+        <div className="pt-16 md:pt-20 bg-transparent">
           <SwimmingHero />
           <ProgramsOverview />
           <SkillLevels />
           <Schedule />
           <Instructors />
           <Testimonials />
-          <ContactForm />
           <Footer />
         </div>
       </div>
@@ -201,9 +197,11 @@ export default function SwimmingMode({ onBackToSelection, onSwitchToFitness }: S
       {/* Wave transition during mode switch */}
       <WaveTransition 
         isVisible={isSwitching}
-        mode="swimming"
+        mode="fitness"
         onAnimationComplete={() => {
           console.log('Wave animation complete in swimming mode');
+          // Ensure we switch to fitness mode after animation
+          onSwitchToFitness();
         }}
       />
       

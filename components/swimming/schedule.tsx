@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState, useRef, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronDown, ChevronUp, Check, Award, AwardIcon, Trophy, Star, Zap, Users, Clock, Hourglass, UserCircle2 } from "lucide-react"
 
 interface ClassScheduleItem {
   id: number
@@ -18,6 +19,49 @@ export default function Schedule() {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
   const [activeDay, setActiveDay] = useState("Monday")
   const [activeFilter, setActiveFilter] = useState("all")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const getLevelIcon = (level: string, className: string) => {
+    switch (level) {
+      case 'beginner':
+        return <Star className={className} />
+      case 'intermediate':
+        return <AwardIcon className={className} />
+      case 'advanced':
+        return <Zap className={className} />
+      default:
+        return <Award className={className} />
+    }
+  }
+
+  const getLevelLabel = (level: string) => {
+    switch (level) {
+      case 'all':
+        return 'All Levels'
+      case 'beginner':
+        return 'Beginner'
+      case 'intermediate':
+        return 'Intermediate'
+      case 'advanced':
+        return 'Advanced'
+      default:
+        return 'All Levels'
+    }
+  }
 
   const scheduleData: Record<string, ClassScheduleItem[]> = {
     Monday: [
@@ -255,8 +299,7 @@ export default function Schedule() {
   }
 
   return (
-    <section id="schedule" className="py-12 md:py-20 px-4 md:px-6 bg-white relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-sky-50 to-transparent pointer-events-none"></div>
+    <section id="schedule" className="relative py-16 md:py-24 px-4 sm:px-6 overflow-hidden bg-transparent">
 
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-8 md:mb-12">
@@ -301,8 +344,70 @@ export default function Schedule() {
         </div>
 
         {/* Level Filter */}
-        <div className="mb-6 md:mb-8 flex justify-center px-2">
-          <div className="flex flex-wrap gap-1 md:gap-2 bg-sky-50 p-1 rounded-2xl max-w-full">
+        <div className="mb-6 md:mb-8 flex flex-col items-center px-2 gap-4">
+          {/* Mobile Dropdown */}
+          <div className="w-full max-w-xs md:hidden relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex items-center justify-between px-5 py-3.5 bg-white border-2 border-sky-100 rounded-2xl shadow-sm hover:border-sky-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50"
+            >
+              <div className="flex items-center gap-2 text-sky-900 font-medium">
+                {getLevelIcon(activeFilter, 'h-4 w-4')}
+                <span>{getLevelLabel(activeFilter)}</span>
+              </div>
+              {isDropdownOpen ? (
+                <ChevronUp className="h-5 w-5 text-sky-500" />
+              ) : (
+                <ChevronDown className="h-5 w-5 text-sky-500" />
+              )}
+            </button>
+            
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute z-10 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-sky-100 overflow-hidden"
+                  ref={dropdownRef}
+                >
+                  {[
+                    { key: "all", label: "All Levels", icon: <Award className="h-4 w-4" /> },
+                    { key: "beginner", label: "Beginner", icon: <Star className="h-4 w-4" /> },
+                    { key: "intermediate", label: "Intermediate", icon: <AwardIcon className="h-4 w-4" /> },
+                    { key: "advanced", label: "Advanced", icon: <Zap className="h-4 w-4" /> },
+                  ].map((filter) => (
+                    <button
+                      key={filter.key}
+                      onClick={() => {
+                        setActiveFilter(filter.key);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-5 py-3 text-left text-sm font-medium transition-colors duration-150 ${
+                        activeFilter === filter.key 
+                          ? 'bg-sky-50 text-sky-700' 
+                          : 'text-sky-600 hover:bg-sky-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className={`${activeFilter === filter.key ? 'text-sky-500' : 'text-sky-400'}`}>
+                          {filter.icon}
+                        </span>
+                        {filter.label}
+                      </div>
+                      {activeFilter === filter.key && (
+                        <Check className="h-4 w-4 text-sky-500" />
+                      )}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Desktop Buttons */}
+          <div className="hidden md:flex flex-wrap gap-1 md:gap-2 bg-sky-50 p-1 rounded-2xl">
             {[
               { key: "all", label: "All Levels" },
               { key: "beginner", label: "Beginner" },
@@ -330,78 +435,89 @@ export default function Schedule() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-2"
+          className="w-full space-y-4 md:space-y-5"
         >
           {filteredSchedule?.map((classItem, index) => (
             <motion.div
               key={classItem.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-white border border-sky-200 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+              transition={{ duration: 0.3, delay: index * 0.03 }}
+              whileHover={{ y: -2 }}
+              className="w-full bg-white/95 backdrop-blur-sm border border-cyan-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200"
             >
-              <div className="p-4 md:p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-base md:text-lg font-bold text-sky-900 leading-tight">{classItem.name}</h3>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-xl font-medium ${getAvailabilityColor(
-                      classItem.availability,
-                    )}`}
-                  >
-                    {classItem.availability === "available"
-                      ? "Available"
-                      : classItem.availability === "limited"
-                        ? "Few Spots"
-                        : "Full"}
-                  </span>
-                </div>
+              <div className="p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                  <div className="flex-1 min-w-0 space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <h3 className="text-base font-semibold text-cyan-900 leading-tight">
+                        {classItem.name}
+                      </h3>
+                      <span
+                        className={`px-3 py-1 rounded-full text-[11px] font-medium whitespace-nowrap ${
+                          classItem.availability === "available"
+                            ? "bg-green-50/80 text-green-700 border border-green-100"
+                            : classItem.availability === "limited"
+                              ? "bg-yellow-50/80 text-yellow-700 border border-yellow-100"
+                              : "bg-red-50/80 text-red-700 border border-red-100"
+                        }`}
+                      >
+                        {classItem.availability === "available"
+                          ? "Available"
+                          : classItem.availability === "limited"
+                            ? "Few Spots"
+                            : "Class Full"}
+                      </span>
+                    </div>
+                    
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-cyan-700">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-cyan-500" />
+                        <span>{classItem.time}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Hourglass className="w-3.5 h-3.5 text-cyan-500" />
+                        <span>{classItem.duration}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <UserCircle2 className="w-3.5 h-3.5 text-cyan-500" />
+                        <span className="truncate max-w-[120px] sm:max-w-[140px]">{classItem.instructor}</span>
+                      </div>
+                    </div>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sky-700 text-sm">
-                    <span className="font-medium min-w-[60px]">Time:</span>
-                    <span className="ml-2 text-xs md:text-sm">{classItem.time}</span>
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+                          classItem.level === "beginner"
+                            ? "bg-green-50/80 text-green-700 border border-green-100"
+                            : classItem.level === "intermediate"
+                              ? "bg-blue-50/80 text-blue-700 border border-blue-100"
+                              : classItem.level === "advanced"
+                                ? "bg-purple-50/80 text-purple-700 border border-purple-100"
+                                : "bg-gray-50/80 text-gray-700 border border-gray-100"
+                        }`}
+                      >
+                        {classItem.level.charAt(0).toUpperCase() + classItem.level.slice(1)}
+                      </span>
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-50/80 border border-cyan-100">
+                        <Users className="w-3.5 h-3.5 text-cyan-600" />
+                        <span className="text-xs font-medium text-cyan-700">{classItem.capacity}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center text-sky-700 text-sm">
-                    <span className="font-medium min-w-[60px]">Duration:</span>
-                    <span className="ml-2 text-xs md:text-sm">{classItem.duration}</span>
-                  </div>
-                  <div className="flex items-center text-sky-700 text-sm">
-                    <span className="font-medium min-w-[60px]">Instructor:</span>
-                    <span className="ml-2 text-xs md:text-sm">{classItem.instructor}</span>
-                  </div>
-                  <div className="flex items-center text-sky-700 text-sm">
-                    <span className="font-medium min-w-[60px]">Capacity:</span>
-                    <span className="ml-2 text-xs md:text-sm">{classItem.capacity}</span>
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`text-xs px-3 py-1 rounded-xl font-medium ${
-                      classItem.level === "beginner"
-                        ? "bg-green-100 text-green-800"
-                        : classItem.level === "intermediate"
-                          ? "bg-blue-100 text-blue-800"
-                          : classItem.level === "advanced"
-                            ? "bg-purple-100 text-purple-800"
-                            : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {classItem.level.charAt(0).toUpperCase() + classItem.level.slice(1)}
-                  </span>
                   <motion.button
-                    className={`px-3 md:px-4 py-2 rounded-2xl text-xs md:text-sm font-medium transition-all duration-300 ${
+                    className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                       classItem.availability === "full"
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-sky-600 text-white hover:bg-sky-700"
+                        ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                        : "bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:shadow-lg hover:shadow-cyan-200/50"
                     }`}
                     disabled={classItem.availability === "full"}
-                    whileHover={classItem.availability !== "full" ? { scale: 1.05 } : {}}
-                    whileTap={classItem.availability !== "full" ? { scale: 0.95 } : {}}
+                    whileHover={classItem.availability !== "full" ? { y: -2, scale: 1.02 } : {}}
+                    whileTap={classItem.availability !== "full" ? { scale: 0.98 } : {}}
                     data-book-now="true"
                   >
-                    {classItem.availability === "full" ? "Full" : "Book Now"}
+                    {classItem.availability === "full" ? "Fully Booked" : "Book Now"}
                   </motion.button>
                 </div>
               </div>

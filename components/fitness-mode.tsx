@@ -250,9 +250,11 @@ export default function FitnessMode({ onBackToSelection, onSwitchToSwimming }: F
       {/* Wave transition during mode switch */}
       <WaveTransition 
         isVisible={isSwitching} 
-        mode="fitness"
+        mode="swimming"
         onAnimationComplete={() => {
-          console.log('Wave animation complete');
+          console.log('Wave animation complete in fitness mode');
+          // Ensure we switch to swimming mode after animation
+          onSwitchToSwimming();
         }}
       />
       

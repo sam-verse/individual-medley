@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react"
 import { Waves, Dumbbell } from "lucide-react"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 interface ModeSelectionProps {
   onModeSelect: (mode: string) => void
@@ -152,9 +153,13 @@ const ModeSelection = ({ onModeSelect }: ModeSelectionProps) => {
           transition={{ duration: 0.8 }}
           className="mb-6 flex justify-center"
         >
-          <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-            <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white">IM</div>
-          </div>
+          <Image
+            src="/images/fitness-logo.png"
+            alt="Individual Medley Logo"
+            width={400}
+            height={400}
+            className="w-24 h-24 sm:w-32 sm:h-32 md:w-70 md:h-20"
+          />
         </motion.div>
 
         <motion.h1
