@@ -80,7 +80,7 @@ export default function TrainingPrograms() {
     },
     {
       icon: <Trophy className="w-6 h-6 md:w-8 md:h-8" />,
-      title: "Sports fitness",
+      title: "Sports Fitness",
       description: "Sport-specific training to enhance athletic performance and competitive edge.",
       duration: "75 min",
       intensity: "Very High",
