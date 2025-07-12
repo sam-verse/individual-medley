@@ -7,10 +7,16 @@ import Services from "./Services"
 import Testimonials from "./Testimonials"
 import Contact from "./Contact"
 import Footer from "./Footer"
+import SwimmingMode from "../swimming-mode"
+import FitnessMode from "../fitness-mode"
+import WaterLoading from "../water-loading"
+import { Menu, X } from "lucide-react"
 
 export default function MainPage() {
   const [currentMode, setCurrentMode] = useState<'main' | 'swimming' | 'fitness'>('main')
   const [isTransitioning, setIsTransitioning] = useState(false)
+  // Mobile menu state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleModeSwitch = (mode: 'swimming' | 'fitness') => {
     setIsTransitioning(true)
@@ -121,43 +127,86 @@ export default function MainPage() {
           </svg>
         </div>
       </motion.div>
-      {/* Mode Navigation Bar */}
-      <motion.nav 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-md h-16 border-b border-gray-100 shadow-sm"
-      >
-        <div className="py-2 pl-4 flex items-center h-full justify-start">
-          <motion.div 
-            className="flex flex-col items-start"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <span className="text-2xl sm:text-3xl font-extrabold text-blue-900 tracking-tight flex items-center gap-3 select-none">
-              <img src="/images/swimming-logo.png" alt="logo" className="w-12 h-12 mr-2" />
-              Individual Medley
-            </span> 
-            {/* <span className="block w-12 h-1 mt-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400" /> */}
-          </motion.div>
-        </div>
-      </motion.nav>
+      {/* Mode Navigation Bar - only show on main mode */}
+      {currentMode === 'main' && (
+        <motion.nav 
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-md h-16 border-b border-gray-100 shadow-sm"
+        >
+          <div className="py-2 pl-4 pr-4 flex items-center h-full justify-between w-full">
+            <motion.div 
+              className="flex flex-col items-start"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <span className="text-2xl sm:text-3xl font-extrabold text-blue-900 tracking-tight flex items-center gap-3 select-none">
+                <img src="/images/swimming-logo.png" alt="logo" className="w-12 h-12 mr-2" />
+                Individual Medley
+              </span> 
+            </motion.div>
+            {/* Desktop Mode Switch Buttons */}
+            <div className="hidden md:flex items-center gap-3">
+              <button
+                onClick={() => handleModeSwitch('swimming')}
+                className="px-5 py-2 rounded-full font-semibold text-blue-700 bg-blue-100 hover:bg-blue-200 transition-all border border-blue-200 shadow-sm"
+              >
+                Swimming Mode
+              </button>
+              <button
+                onClick={() => handleModeSwitch('fitness')}
+                className="px-5 py-2 rounded-full font-semibold text-cyan-700 bg-cyan-100 hover:bg-cyan-200 transition-all border border-cyan-200 shadow-sm"
+              >
+                Fitness Mode
+              </button>
+            </div>
+            {/* Mobile Hamburger Menu */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setMobileMenuOpen((v) => !v)}
+                className="p-2 rounded-full hover:bg-blue-100 transition-colors focus:outline-none"
+                aria-label="Open menu"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6 text-blue-900" /> : <Menu className="w-6 h-6 text-blue-900" />}
+              </button>
+            </div>
+          </div>
+          {/* Mobile Dropdown Menu */}
+          {mobileMenuOpen && (
+            <div className="absolute top-16 left-0 right-0 bg-white shadow-lg border-b border-gray-100 z-50 flex flex-col items-stretch md:hidden animate-fade-in">
+              <button
+                onClick={() => { setMobileMenuOpen(false); handleModeSwitch('swimming'); }}
+                className="w-full px-6 py-4 text-left font-semibold text-blue-700 hover:bg-blue-50 border-b border-blue-100"
+              >
+                Swimming Mode
+              </button>
+              <button
+                onClick={() => { setMobileMenuOpen(false); handleModeSwitch('fitness'); }}
+                className="w-full px-6 py-4 text-left font-semibold text-cyan-700 hover:bg-cyan-50"
+              >
+                Fitness Mode
+              </button>
+            </div>
+          )}
+        </motion.nav>
+      )}
 
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {currentMode === 'main' && (
           <motion.div
             key="main"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className=""
           >
             <Hero />
             <About />
-            <Clubs />
+            <Clubs onModeSwitch={handleModeSwitch} />
             <Services />
             <Testimonials />
             <Contact />
@@ -168,81 +217,55 @@ export default function MainPage() {
         {currentMode === 'swimming' && (
           <motion.div
             key="swimming"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className=""
           >
-            <SwimmingMode />
+            <SwimmingMode 
+              onBackToSelection={handleBackToMain}
+              onSwitchToFitness={() => handleModeSwitch('fitness')}
+            />
           </motion.div>
         )}
 
         {currentMode === 'fitness' && (
           <motion.div
             key="fitness"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className=""
           >
-            <FitnessMode />
+            <FitnessMode 
+              onBackToSelection={handleBackToMain}
+              onSwitchToSwimming={() => handleModeSwitch('swimming')}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Transition Overlay */}
+      {/* Extra smooth blurred overlay during transition */}
       <AnimatePresence>
         {isTransitioning && (
           <motion.div
+            key="blur-overlay"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 0.32 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white/80 backdrop-blur-sm z-40 flex items-center justify-center"
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="text-2xl font-semibold text-blue-900"
-            >
-              Loading...
-            </motion.div>
-          </motion.div>
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            className="fixed inset-0 z-40 bg-white/60 backdrop-blur-[6px] pointer-events-none"
+          />
         )}
       </AnimatePresence>
-    </div>
-  )
-}
-
-// Placeholder components for mode switching
-function SwimmingMode() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-cyan-100 flex items-center justify-center">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center"
-      >
-        <h1 className="text-4xl font-bold text-blue-900 mb-4">🏊 Swimming Mode</h1>
-        <p className="text-xl text-blue-700">Swimming mode content coming soon...</p>
-      </motion.div>
-    </div>
-  )
-}
-
-function FitnessMode() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-emerald-100 flex items-center justify-center">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center"
-      >
-        <h1 className="text-4xl font-bold text-green-900 mb-4">💪 Fitness Mode</h1>
-        <p className="text-xl text-green-700">Fitness mode content coming soon...</p>
-      </motion.div>
+      {/* Transition Overlay - WaterLoading animation */}
+      <AnimatePresence>
+        {isTransitioning && (
+          <WaterLoading isVisible={true} onComplete={() => {}} />
+        )}
+      </AnimatePresence>
     </div>
   )
 } 

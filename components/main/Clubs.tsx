@@ -15,7 +15,7 @@ const fitnessFeatures = [
   { icon: <Users className="w-5 h-5" />, text: "Squad Vibes" },
 ]
 
-export default function Clubs() {
+export default function Clubs({ onModeSwitch }: { onModeSwitch?: (mode: 'swimming' | 'fitness') => void }) {
   return (
     <section id="clubs" className="relative py-20 bg-transparent overflow-hidden">
       {/* Background Elements */}
@@ -135,9 +135,13 @@ export default function Clubs() {
               ))}
             </motion.div>
             {/* CTA */}
-            <a href="#swimming" className="inline-block mt-6 px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-lg hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 text-lg focus:ring-4 focus:ring-cyan-300/40 hover:shadow-[0_4px_32px_0_rgba(56,189,248,0.35)]">
+            <button
+              type="button"
+              onClick={() => onModeSwitch && onModeSwitch('swimming')}
+              className="inline-block mt-6 px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-lg hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 text-lg focus:ring-4 focus:ring-cyan-300/40 hover:shadow-[0_4px_32px_0_rgba(56,189,248,0.35)]"
+            >
               Explore Swimming Klub
-            </a>
+            </button>
           </motion.div>
           {/* Swimming Image Side */}
           <motion.div
@@ -282,9 +286,13 @@ export default function Clubs() {
               ))}
             </motion.div>
             {/* CTA */}
-            <a href="#fitness" className="inline-block mt-6 px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold shadow-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 text-lg focus:ring-4 focus:ring-cyan-300/40 hover:shadow-[0_4px_32px_0_rgba(56,189,248,0.35)]">
+            <button
+              type="button"
+              onClick={() => onModeSwitch && onModeSwitch('fitness')}
+              className="inline-block mt-6 px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold shadow-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300 text-lg focus:ring-4 focus:ring-cyan-300/40 hover:shadow-[0_4px_32px_0_rgba(56,189,248,0.35)]"
+            >
               Explore Fitness Klub
-            </a>
+            </button>
           </motion.div>
         </div>
       </div>
