@@ -194,7 +194,7 @@ export default function SwimmingMode({ onBackToSelection, onSwitchToFitness }: S
       <WaterLoading 
         isVisible={isSwitching}
         onComplete={() => setLoadingComplete(true)}
-      />
+          />
 
       {/* Booking Modal */}
       <BookingModal

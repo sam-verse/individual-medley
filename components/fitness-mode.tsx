@@ -253,9 +253,9 @@ export default function FitnessMode({ onBackToSelection, onSwitchToSwimming }: F
       
       {/* Water Loading Animation during mode switch */}
       <WaterLoading 
-        isVisible={isSwitching}
+        isVisible={isSwitching} 
         onComplete={() => setLoadingComplete(true)}
-      />
+          />
     </div>
   )
 }

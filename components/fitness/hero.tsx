@@ -109,7 +109,7 @@ export default function FitnessHero() {
               <span className="relative flex h-2 w-2 mr-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-              </span>
+            </span>
               TRANSFORM YOUR BODY & MIND
             </div>
           </motion.div>
@@ -137,7 +137,7 @@ export default function FitnessHero() {
           </motion.div>
           <div className="relative z-10">
             <p className="text-sm sm:text-base md:text-lg text-blue-200/90 mb-3 md:mb-6 leading-relaxed max-w-lg mx-auto md:mx-0 px-2 sm:px-0 opacity-100">
-              Transform your fitness journey with our cutting-edge training programs, expert coaches, and state-of-the-art facilities. Achieve peak performance and unlock your true potential.
+            Transform your fitness journey with our cutting-edge training programs, expert coaches, and state-of-the-art facilities. Achieve peak performance and unlock your true potential.
             </p>
           </div>
 
